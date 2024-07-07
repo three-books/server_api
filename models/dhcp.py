@@ -63,6 +63,24 @@ def get_dhcp_range():
     return result
 
 
+def put_dhcp_range(subnet, netmask, default_gateway, range_start, range_end, range_netmask):
+    db = get_db()
+    curs = db.cursor()
+    curs.execute(
+        f'UPDATE DHCP_RANGE SET '
+        f'SUBNET = "{subnet}", '
+        f'NETMASK = "{netmask}", '
+        f'DEFAULT_GATEWAY = "{default_gateway}", '
+        f'RANGE_START = "{range_start}", '
+        f'RANGE_END = "{range_end}", '
+        f'RANGE_NETMASK = "{range_netmask}"; '
+    )
+    db.commit()
+
+    result = get_dhcp_range()
+    return result
+
+
 def get_fixed_ip():
     db = get_db()
     curs = db.cursor()

@@ -21,8 +21,19 @@ def dhcp_config():
 
 @app.route('/dhcp/range', methods=['GET', 'PUT'])
 def dhcp_range():
+
     if request.method == 'GET':
         result = dhcp.get_dhcp_range()
+        return result
+
+    if request.method == 'PUT':
+        subnet = request.values.get('subnet')
+        netmask = request.values.get('netmask')
+        default_gateway = request.values.get('default_gateway')
+        range_start = request.values.get('range_start')
+        range_end = request.values.get('range_end')
+        range_netmask = request.values.get('range_netmask')
+        result = dhcp.put_dhcp_range(subnet, netmask, default_gateway, range_start, range_end, range_netmask)
         return result
 
 
