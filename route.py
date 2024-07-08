@@ -43,6 +43,23 @@ def dhcp_fixed_ip():
         result = dhcp.get_fixed_ip()
         return result
 
+    if request.method == 'POST':
+        ip = request.values.get('ip')
+        mac = request.values.get('mac')
+        result = dhcp.post_fixed_ip(ip, mac)
+        return result
+
+    if request.method == 'PUT':
+        key_id = request.values.get('id')
+        ip = request.values.get('ip')
+        mac = request.values.get('mac')
+        result = dhcp.put_fixed_ip(key_id, ip, mac)
+        return result
+
+    if request.method == 'DELETE':
+        key_id = request.values.get('id')
+        result = dhcp.delete_fixed_ip(key_id)
+        return result
 
 def main():
     app.run()

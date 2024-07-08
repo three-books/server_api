@@ -16,4 +16,15 @@ p_r = requests.put('http://127.0.0.1:5000/dhcp/range', {'subnet': '10.0.0.0', 'n
                                                         'default_gateway': '10.0.0.1', 'range_start': '10.1.0.100',
                                                         'range_end': '10.1.0.200', 'range_netmask': '255.255.255.0'})
 print(p_r.text)
+p_f = requests.put('http://127.0.0.1:5000/dhcp/fixed-ip', {'id': '1', 'ip': '192.168.99.99.',
+                                                           'mac': 'AB:CD:EF:GH:IJ:KL'})
+print(p_f.text)
 print('put---end----------------')
+print('post---start---------------')
+post_f = requests.post('http://127.0.0.1:5000/dhcp/fixed-ip', {'ip': '192.168.99.88.', 'mac': 'AB:CD:EF:GH:IJ:88'})
+print(post_f.text)
+print('post---end----------------')
+print('delete---start---------------')
+d_f = requests.delete('http://127.0.0.1:5000/dhcp/fixed-ip', data={'id': 1})
+print(d_f.text)
+print('delete---end----------------')

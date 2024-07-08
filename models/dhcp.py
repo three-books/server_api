@@ -30,6 +30,7 @@ def get_dhcp_config():
     result = {'DOMAIN_NAME': domain_name,
               'NAME_SERVER': name_server
               }
+    curs.close()
     return result
 
 
@@ -41,6 +42,7 @@ def put_dhcp_config(domain_name, name_server):
     )
     db.commit()
     result = get_dhcp_config()
+
     return result
 
 
@@ -60,6 +62,7 @@ def get_dhcp_range():
               'RANGE_NETMASK': range_netmask
               }
 
+    curs.close()
     return result
 
 
@@ -93,4 +96,42 @@ def get_fixed_ip():
         temp = {ip: mac}
         result[no] = temp
 
+    curs.close()
+    return result
+
+
+def post_fixed_ip(ip, mac):
+    db = get_db()
+    curs = db.cursor()
+    curs.execute('SELECT MAX(ID) FROM FIXED_IP;')
+    key = int(curs.fetchone()[0]) + 1
+    curs.execute(
+        f'INSERT INTO FIXED_IP VALUES ("{key}", "{ip}", "{mac}");'
+    )
+    db.commit()
+
+    result = get_fixed_ip()
+    return result
+
+
+def put_fixed_ip(key, ip, mac):
+    db = get_db()
+    curs = db.cursor()
+    curs.execute(
+        f'UPDATE FIXED_IP SET '
+        f'IP = "{ip}", '
+        f'MAC_ADDRESS = "{mac}" '
+        f'WHERE ID = "{key}";'
+    )
+    db.commit()
+    result = get_fixed_ip()
+    return result
+
+
+def delete_fixed_ip(key):
+    db = get_db()
+    curs = db.cursor()
+    curs.execute(f'DELETE FROM FIXED_IP WHERE ID = "{key}";')
+    db.commit()
+    result = get_fixed_ip()
     return result
