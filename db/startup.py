@@ -53,10 +53,19 @@ def create_table():
         CREATE TABLE FIXED_IP (
             ID VARCHAR(4),
             IP VARCHAR(35),
-            MAC_ADDRESS VARCHAR(20)
+            MAC_ADDRESS VARCHAR(20),
+            NOTE VARCHAR(200)
         );
     """
     exec_db(fixed_ip)
+
+    account = """
+        CREATE TABLE ACCOUNT (
+            ID VARCHAR(35),
+            PASSWORD VARCHAR(35)
+        );
+    """
+    exec_db(account)
 
 
 def insert_data():
@@ -74,20 +83,26 @@ def insert_data():
 
     fixed_ip = """
         INSERT INTO FIXED_IP 
-        VALUES("1", "192.168.3.3", "12:34:56:ff:ff:aa"),
-        ("2", "192.168.3.4", "12:34:56:ff:ff:ab"),
-        ("3", "192.168.3.5", "12:34:56:ff:ff:ac")
+        VALUES("1", "192.168.3.3", "12:34:56:ff:ff:aa", "テスト用PC1"),
+        ("2", "192.168.3.4", "12:34:56:ff:ff:ab", "テスト用PC2"),
+        ("3", "192.168.3.5", "12:34:56:ff:ff:ac", "テスト用PC3")
     """
     exec_db(fixed_ip)
 
+    account = """
+        INSERT INTO ACCOUNT 
+        VALUES("admin", "admin")
+    """
+    exec_db(account)
+
 
 def test():
-    sql = 'select * from DHCP_CONFIG'
     db = sqlite3.connect(
         'server_api.db',
         isolation_level=None,
     )
-    result = db.execute(sql)
+    sql = 'select * from ACCOUNT WHERE ID=? AND PASSWORD=?;'
+    result = db.execute(sql, ('admin', 'admin'))
     print(result.fetchone())
     db.close()
 
@@ -96,6 +111,7 @@ def main():
     create_db()
     create_table()
     insert_data()
+    test()
 
 
 if __name__ == '__main__':
