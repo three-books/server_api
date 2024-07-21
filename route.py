@@ -2,6 +2,7 @@ from flask import Flask
 from flask import request
 from flask_cors import CORS
 
+from method import CreateConfig
 from models import dhcp
 from models import auth
 
@@ -80,6 +81,13 @@ def auth_login():
         password = request.values.get('password') or request.json['password']
         result = auth.login(account, password)
         return result
+
+@app.route('/test', methods=['GET'])
+def test():
+    if request.method == 'GET':
+        CreateConfig.create_dhcpd_conf()
+        return 'OK'
+
 
 
 def main():
