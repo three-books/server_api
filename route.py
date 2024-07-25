@@ -61,8 +61,9 @@ def dhcp_fixed_ip():
         result = dhcp.put_fixed_ip(key_id, ip, mac, note)
         return result
 
+@app.route('/dhcp/fixed-ip/<key_id>', methods=['DELETE'])
+def dhcp_fixed_ip_delete(key_id):
     if request.method == 'DELETE':
-        key_id = request.values.get('id') or request.json['id']
         result = dhcp.delete_fixed_ip(key_id)
         return result
 
