@@ -31,7 +31,7 @@ import requests
 # print(post_f.text)
 # print('post---end----------------')
 # print('delete---start---------------')
-d_f = requests.delete('http://127.0.0.1:5000/dhcp/fixed-ip', data={'id': 1})
+# d_f = requests.delete('http://127.0.0.1:5000/dhcp/fixed-ip', data={'id': 1})
 # print(d_f.text)
 # print('delete---end----------------')
 #
@@ -40,4 +40,7 @@ d_f = requests.delete('http://127.0.0.1:5000/dhcp/fixed-ip', data={'id': 1})
 # print(post_a.text)
 # print('-------------------------------------------------------------------------------------------')
 #
-# requests.get('http://127.0.0.1:5000/test')
+# requests.get('http://127.0.0.1:5000/dhcp/apply')
+
+g_f = requests.get('http://192.168.2.19:5000/dhcp/fixed-ip')
+print(g_f.text)

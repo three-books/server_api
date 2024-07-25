@@ -83,16 +83,17 @@ def auth_login():
         result = auth.login(account, password)
         return result
 
-@app.route('/test', methods=['GET'])
-def test():
+@app.route('/dhcp/apply', methods=['GET'])
+def dhcp_apply():
     if request.method == 'GET':
-        CreateConfig.create_dhcpd_conf()
-        return 'OK'
+        result = CreateConfig.create_dhcpd_conf()
+        print(result)
+        return 'success'
 
 
 
 def main():
-    app.run()
+    app.run(host='0.0.0.0')
 
 
 if __name__ == '__main__':

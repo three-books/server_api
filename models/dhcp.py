@@ -143,35 +143,35 @@ def delete_fixed_ip(key):
 
 
 def get_leases():
-    # output_str = subprocess.run('dhcp-lease-list', capture_output=True, text=True).stdout
-    #
-    # isNeedData = False
-    # needDataList = []
-    #
-    # for row in output_str.splitlines():
-    #
-    #     if isNeedData:
-    #         needDataList.append(row)
-    #
-    #     if row.startswith('================='):
-    #         isNeedData = True
-    #
-    # result = []
-    # for row in needDataList:
-    #     rowList = row.split()
-    #
-    #     result.append({
-    #         'mac': rowList.pop(0),
-    #         'ip': rowList.pop(0),
-    #         'manufacturer': rowList.pop(-1),
-    #         'time': rowList.pop(-1),
-    #         'date': rowList.pop(-1),
-    #         'hostname': ' '.join(rowList)})
+    output_str = subprocess.run('dhcp-lease-list', capture_output=True, text=True).stdout
 
-    result = [{'mac': '68:e1:dc:13:41:8c', 'ip': '10.0.0.100', 'manufacturer': '-NA-', 'time': '09:12:05',
-               'date': '2024-06-26', 'hostname': 'DESKTOP-FPE8SQ'},
-              {'mac': 'b8:27:eb:50:93:53', 'ip': '10.0.0.103', 'manufacturer': '-NA-', 'time': '15:01:17',
-               'date': '2024-06-26', 'hostname': '-NA-'},
-              {'mac': 'd8:3a:dd:54:1c:9a', 'ip': '10.0.0.104', 'manufacturer': '-NA-', 'time': '09:38:45',
-               'date': '2024-06-26', 'hostname': '-NA-'}]
+    isNeedData = False
+    needDataList = []
+
+    for row in output_str.splitlines():
+
+        if isNeedData:
+            needDataList.append(row)
+
+        if row.startswith('================='):
+            isNeedData = True
+
+    result = []
+    for row in needDataList:
+        rowList = row.split()
+
+        result.append({
+            'mac': rowList.pop(0),
+            'ip': rowList.pop(0),
+            'manufacturer': rowList.pop(-1),
+            'time': rowList.pop(-1),
+            'date': rowList.pop(-1),
+            'hostname': ' '.join(rowList)})
+
+    # result = [{'mac': '68:e1:dc:13:41:8c', 'ip': '10.0.0.100', 'manufacturer': '-NA-', 'time': '09:12:05',
+    #            'date': '2024-06-26', 'hostname': 'DESKTOP-FPE8SQ'},
+    #           {'mac': 'b8:27:eb:50:93:53', 'ip': '10.0.0.103', 'manufacturer': '-NA-', 'time': '15:01:17',
+    #            'date': '2024-06-26', 'hostname': '-NA-'},
+    #           {'mac': 'd8:3a:dd:54:1c:9a', 'ip': '10.0.0.104', 'manufacturer': '-NA-', 'time': '09:38:45',
+    #            'date': '2024-06-26', 'hostname': '-NA-'}]
     return result

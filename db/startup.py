@@ -71,21 +71,21 @@ def create_table():
 def insert_data():
     dhcp_config = """
         INSERT INTO DHCP_CONFIG 
-        VALUES("test.com", "dns.test.com");
+        VALUES("alt.com", "202.224.32.1, 202.224.32.2");
     """
     exec_db(dhcp_config)
 
     dhcp_range = """
         INSERT INTO DHCP_RANGE
-        VALUES("192.168.3.0", "255.255.255.0", "192.168.3.1", "192.168.3.100", "192.168.3.200", "255.255.255.0")
+        VALUES("192.168.2.0", "255.255.255.0", "192.168.2.1", "192.168.2.100", "192.168.2.200", "255.255.255.0")
     """
     exec_db(dhcp_range)
 
     fixed_ip = """
         INSERT INTO FIXED_IP 
-        VALUES("1", "192.168.3.3", "12:34:56:ff:ff:aa", "テスト用PC1"),
-        ("2", "192.168.3.4", "12:34:56:ff:ff:ab", "テスト用PC2"),
-        ("3", "192.168.3.5", "12:34:56:ff:ff:ac", "テスト用PC3")
+        VALUES("1", "192.168.2.8", "BC:6E:E2:37:3F:61", "302-PC013-wifi"),
+        ("2", "192.168.2.9", "68:E1:DC:13:41:8C", "302-PC013-eth")
+        
     """
     exec_db(fixed_ip)
 
