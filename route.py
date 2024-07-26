@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask import request
 from flask_cors import CORS
 
@@ -61,6 +61,7 @@ def dhcp_fixed_ip():
         result = dhcp.put_fixed_ip(key_id, ip, mac, note)
         return result
 
+
 @app.route('/dhcp/fixed-ip/<key_id>', methods=['DELETE'])
 def dhcp_fixed_ip_delete(key_id):
     if request.method == 'DELETE':
@@ -83,13 +84,13 @@ def auth_login():
         result = auth.login(account, password)
         return result
 
+
 @app.route('/dhcp/apply', methods=['GET'])
 def dhcp_apply():
     if request.method == 'GET':
         result = CreateConfig.create_dhcpd_conf()
         print(result)
-        return 'success'
-
+        return {}
 
 
 def main():

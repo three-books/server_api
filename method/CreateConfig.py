@@ -1,3 +1,4 @@
+import json
 import string
 import subprocess
 
@@ -21,7 +22,7 @@ def shaping_dhcpd_conf():
     subnet, netmask, default_gateway, range_start, range_end, range_netmask = dhcp.get_dhcp_range().values()
 
     fixed_ip_list = []
-    fixed_ip_dict = dhcp.get_fixed_ip()
+    fixed_ip_dict = json.loads(dhcp.get_fixed_ip())
     for item in fixed_ip_dict:
         index, ip, mac, note = item.values()
         fixed_ip_list.append(fixed_ip_template(ip, mac, index))

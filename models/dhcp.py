@@ -1,6 +1,8 @@
 import sqlite3
 import subprocess
+import json
 
+import jsonpickle
 from flask import Flask
 from flask import g
 
@@ -99,7 +101,7 @@ def get_fixed_ip():
                        'note': note})
 
     curs.close()
-    return result
+    return jsonpickle.encode(result)
 
 
 def post_fixed_ip(ip, mac, note):
@@ -168,10 +170,11 @@ def get_leases():
             'date': rowList.pop(-1),
             'hostname': ' '.join(rowList)})
 
-    # result = [{'mac': '68:e1:dc:13:41:8c', 'ip': '10.0.0.100', 'manufacturer': '-NA-', 'time': '09:12:05',
+    # result = {{'mac': '68:e1:dc:13:41:8c', 'ip': '10.0.0.100', 'manufacturer': '-NA-', 'time': '09:12:05',
     #            'date': '2024-06-26', 'hostname': 'DESKTOP-FPE8SQ'},
     #           {'mac': 'b8:27:eb:50:93:53', 'ip': '10.0.0.103', 'manufacturer': '-NA-', 'time': '15:01:17',
     #            'date': '2024-06-26', 'hostname': '-NA-'},
     #           {'mac': 'd8:3a:dd:54:1c:9a', 'ip': '10.0.0.104', 'manufacturer': '-NA-', 'time': '09:38:45',
-    #            'date': '2024-06-26', 'hostname': '-NA-'}]
-    return result
+    #            'date': '2024-06-26', 'hostname': '-NA-'}}
+
+    return jsonpickle.encode(result)

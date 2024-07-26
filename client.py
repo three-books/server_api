@@ -40,7 +40,10 @@ import requests
 # print(post_a.text)
 # print('-------------------------------------------------------------------------------------------')
 #
-# requests.get('http://127.0.0.1:5000/dhcp/apply')
+requests.get('http://127.0.0.1:5000/dhcp/apply')
 
-g_f = requests.get('http://192.168.2.19:5000/dhcp/fixed-ip')
-print(g_f.text)
+# g_c = requests.get('http://127.0.0.1:5000/dhcp/config')
+# print(g_c.text)
+#
+# g_f = requests.get('http://192.168.2.16:5000/dhcp/fixed-ip')
+# print(g_f.text)
