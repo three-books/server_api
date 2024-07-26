@@ -1,16 +1,23 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, Response, make_response
 from flask import request
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager, create_access_token, current_user, jwt_required, unset_access_cookies, \
+    set_access_cookies
 
 from method import CreateConfig
 from models import dhcp
 from models import auth
 
 app = Flask(__name__)
+
+app.config["JWT_SECRET_KEY"] = "super-secret"
+jwt = JWTManager(app)
+
 CORS(app)
 
 
 @app.route('/dhcp/config', methods=['GET', 'PUT'])
+@jwt_required()
 def dhcp_config():
     if request.method == 'GET':
         result = dhcp.get_dhcp_config()
@@ -24,6 +31,7 @@ def dhcp_config():
 
 
 @app.route('/dhcp/range', methods=['GET', 'PUT'])
+@jwt_required()
 def dhcp_range():
     if request.method == 'GET':
         result = dhcp.get_dhcp_range()
@@ -76,13 +84,27 @@ def dhcp_leases():
         return result
 
 
-@app.route('/auth', methods=['POST'])
-def auth_login():
+@app.route('/login', methods=['POST'])
+def login():
     if request.method == 'POST':
         account = request.values.get('id') or request.json['id']
         password = request.values.get('password') or request.json['password']
         result = auth.login(account, password)
+        if result:
+            access_token = create_access_token(identity=account)
+            response = make_response('true')
+            set_access_cookies(response, access_token)
+            return response, 200
         return result
+
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    app.logger.info('logout started.')
+    response: Response = make_response()
+    # cookieから取り除く。
+    unset_access_cookies(response)
+    return response, 200
 
 
 @app.route('/dhcp/apply', methods=['GET'])

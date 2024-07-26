@@ -4,17 +4,17 @@ import subprocess
 
 from models import dhcp
 
-# dhcpdConf = './test/dhcpd.conf'
-dhcpdConf = '/etc/dhcp/dhcpd.conf'
+dhcpdConf = './test/dhcpd.conf'
+# dhcpdConf = '/etc/dhcp/dhcpd.conf'
 
 
 def create_dhcpd_conf():
     with open(dhcpdConf, 'w') as f:
         f.write(shaping_dhcpd_conf())
 
-    result = subprocess.run(['systemctl', 'restart', 'isc-dhcp-server'])
+    # result = subprocess.run(['systemctl', 'restart', 'isc-dhcp-server'])
 
-    return result.returncode
+    return 'result.returncode'
 
 
 def shaping_dhcpd_conf():
