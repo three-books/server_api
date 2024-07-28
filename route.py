@@ -1,8 +1,8 @@
 from flask import Flask, jsonify, Response, make_response
 from flask import request
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, create_access_token, current_user, jwt_required, unset_access_cookies, \
-    set_access_cookies
+from flask_jwt_extended import JWTManager, create_access_token,  jwt_required,  \
+     get_jwt_identity
 
 from method import CreateConfig
 from models import dhcp
@@ -92,19 +92,15 @@ def login():
         result = auth.login(account, password)
         if result:
             access_token = create_access_token(identity=account)
-            response = make_response('true')
-            set_access_cookies(response, access_token)
-            return response, 200
+            return jsonify(access_token=access_token), 200
         return result
 
 
-@app.route('/logout', methods=['POST'])
-def logout():
-    app.logger.info('logout started.')
-    response: Response = make_response()
-    # cookieから取り除く。
-    unset_access_cookies(response)
-    return response, 200
+@app.route('/auth-token', methods=['POST'])
+def auth_token():
+    # identity = get_jwt_identity()
+    access_token = create_access_token(identity="admin")  # "admin"は後にIDとして受け取るようにする。
+    return jsonify(access_token=access_token)
 
 
 @app.route('/dhcp/apply', methods=['GET'])
