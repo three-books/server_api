@@ -1,8 +1,8 @@
 from flask import Flask, jsonify, Response, make_response
 from flask import request
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, create_access_token,  jwt_required,  \
-     get_jwt_identity
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, \
+    get_jwt_identity, verify_jwt_in_request
 
 from method import CreateConfig
 from models import dhcp
@@ -31,7 +31,6 @@ def dhcp_config():
 
 
 @app.route('/dhcp/range', methods=['GET', 'PUT'])
-@jwt_required()
 def dhcp_range():
     if request.method == 'GET':
         result = dhcp.get_dhcp_range()
@@ -98,9 +97,12 @@ def login():
 
 @app.route('/auth-token', methods=['POST'])
 def auth_token():
-    # identity = get_jwt_identity()
-    access_token = create_access_token(identity="admin")  # "admin"は後にIDとして受け取るようにする。
-    return jsonify(access_token=access_token)
+    try:
+        jwt_header, jwt_data = verify_jwt_in_request()
+        access_token = create_access_token(identity=jwt_data["sub"])  # "admin"は後にIDとして受け取るようにする。
+        return jsonify(valid_token='true', access_token=access_token)
+    except:
+        return jsonify(valid_token='false')
 
 
 @app.route('/dhcp/apply', methods=['GET'])
